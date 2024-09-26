@@ -75,12 +75,17 @@
         color: black;
     }
 </style>
-
 <div class="container">
     <h2>Daftar Pengajuan Cuti</h2>
-
     <!-- Tampilkan nama pengguna yang sedang login di kiri -->
     <div class="user-name">Selamat datang, {{ Auth::user()->name }}</div>
+
+    <!-- Form pencarian berdasarkan tanggal mulai -->
+    <form action="{{ route('cuti.index') }}" method="GET" class="mb-4">
+        <label for="tanggal_mulai">Cari berdasarkan Tanggal Mulai:</label>
+        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" value="{{ request('tanggal_mulai') }}">
+        <button type="submit" class="btn btn-primary mt-2">Cari</button>
+    </form>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -117,4 +122,10 @@
         </tbody>
     </table>
 </div>
+<div class="mt-3 d-flex justify-content-between align-items-center">
+        <div>
+            {{ $cutis->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+        </div>
+        <p class="mt-2">Menampilkan {{ $cutis->count() }} dari {{ $cutis->total() }} data Pengajuan Cuti Anda.</p>
+    </div>
 @endsection

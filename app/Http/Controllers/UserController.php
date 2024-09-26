@@ -15,7 +15,7 @@ class UserController extends Controller
         $users = User::with('jabatan')->when($search , function($query) use ($search)
         {
             return $query->where('name', 'like', '%'. $search .'%');
-        })->paginate(10);
+        })->paginate(5);
         return view('users.index', compact('users', 'search'));
 
     }

@@ -8,6 +8,8 @@ class UserDashboardController extends Controller
 {
     public function index()
     {
-        return view('user.dashboard'); // Tampilkan view dashboard user
-    }
+        $user = auth()->user();
+        $notifications = $user->notifications()->take(5)->get(); // Ambil 5 notifikasi terbaru
+    
+        return view('user.dashboard', compact('notifications'));    }
 }

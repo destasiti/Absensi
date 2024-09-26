@@ -6,20 +6,20 @@ use App\Models\User;
 
 class GajiController extends Controller
 {
-    // Menampilkan semua data gaji
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+    
         $gajis = Gaji::select('gajis.*') // Pilih kolom dari tabel gajis
             ->join('users', 'gajis.UserID', '=', 'users.UserID') // Gabungkan tabel users
             ->when($search, function($query) use ($search) {
                 return $query->where('users.name', 'like', '%' . $search . '%'); // Cari berdasarkan nama pengguna
             })
-            ->paginate(10); // Paginate hasil
-
+            ->paginate(5); // Paginate hasil
+    
         return view('gajis.index', compact('gajis', 'search'));
     }
+    
         
 
     // Menampilkan form untuk menambahkan data gaji baru
@@ -65,26 +65,27 @@ class GajiController extends Controller
         return view('gajis.edit', compact('gaji', 'users')); // Mengirimkan $gaji dan $users ke view
         }
 
-    // Memperbarui data gaji yang ada di database
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'UserID' => 'required|exists:users,UserID',
-            'No_Rekening' => 'required|string|max:50',
-            'Npwp' => 'required|string|max:20',
-            'Nominal' => 'required|numeric',
-        ]);
-
-        $gaji = Gaji::findOrFail($id);
-        $gaji->update([
-            'UserID' => $request->UserID,
-            'No_Rekening' => $request->No_Rekening,
-            'Npwp' => $request->Npwp,
-            'Nominal' => $request->Nominal,
-        ]);
-
-        return redirect()->route('gajis.index')->with('success', 'Data gaji berhasil diperbarui.');
-    }
+        public function update(Request $request, $id)
+        {
+            $request->validate([
+                'UserID' => 'required|exists:users,UserID',
+                'No_Rekening' => 'required|string|max:50',
+                'Npwp' => 'required|string|max:20',
+                'Nominal' => 'required|numeric',
+            ]);
+        
+            $gaji = Gaji::findOrFail($id);
+            $gaji->update([
+                'UserID' => $request->UserID,
+                'No_Rekening' => $request->No_Rekening,
+                'Npwp' => $request->Npwp,
+                'Nominal' => $request->Nominal,
+            ]);
+        
+            return redirect()->route('gajis.index')->with('success', 'Data gaji berhasil diperbarui.');
+        }
+        
+    
 
     // Menghapus data gaji dari database
     public function destroy($id)

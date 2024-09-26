@@ -14,8 +14,9 @@
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
-     @include('layout.sidebar')
+    @include('layout.sidebar')
     <!--  Sidebar End -->
+    
     <!--  Main wrapper -->
     <div class="body-wrapper">
       <!--  Header Start -->
@@ -24,22 +25,17 @@
                 
       <!-- Content fluid -->
       <div class="container-fluid">
-            <section>
-                @yield('content')
-            </section>
-          </div>
-          <!-- / Content fluid -->
-       </div>
+        <!-- Tambahkan elemen-elemen chart di sini -->
+        <div id="chart"></div>
+        <div id="breakup"></div>
+        <div id="earning"></div>
+        
+        <section>
+          @yield('content')
+        </section>
       </div>
+      <!-- / Content fluid -->
     </div>
   </div>
-  <script src="{{ asset('asset/libs/jquery/dist/jquery.min.js') }}"></script>
-  <script src="{{ asset('asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('asset/js/sidebarmenu.js') }}"></script>
-  <script src="{{ asset('asset/js/app.min.js') }}"></script>
-  <script src="{{ asset('asset/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-  <script src="{{ asset('asset/libs/simplebar/dist/simplebar.js') }}"></script>
-  <script src="{{ asset('asset/js/dashboard.js') }}"></script>
 </body>
-
 </html>

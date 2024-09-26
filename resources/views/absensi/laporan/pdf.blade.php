@@ -48,8 +48,8 @@
         <tr>
             <td>{{ $item->user->name }}</td>
             <td>{{ $item->Tanggal }}</td>
-            <td>{{ $item->Waktu_Masuk }}</td>
-            <td>{{ $item->Waktu_Keluar }}</td>
+            <td>{{ $item->WaktuMasuk }}</td>
+            <td>{{ $item->WaktuKeluar }}</td>
             <td>{{ $item->Keterangan }}</td>
         </tr>
         @endforeach

@@ -5,6 +5,16 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="mb-3">
         <a href="{{ route('jabatans.create') }}" class="btn btn-primary">Buat Data Jabatan</a>
@@ -33,7 +43,7 @@
             <tbody>
                 @forelse ($jabatans as $jabatan)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $loop->iteration + ($jabatans->currentPage() - 1) * $jabatans->perPage() }}</td>
                         <td>{{ $jabatan->NamaJabatan }}</td>
                         <td>{{ $jabatan->Keterangan }}</td>
                         <td>
@@ -44,8 +54,8 @@
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                             <form action="{{ route('jabatans.destroy', $jabatan->JabatanID) }}" method="POST" class="d-inline">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="_method" value="delete" />
+                                @csrf
+                                @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin ingin menghapusnya?')" title="Hapus">
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
@@ -61,7 +71,12 @@
         </table>
     </div>
 
-    {{ $jabatans->links() }}
+    <div class="mt-3 d-flex justify-content-between align-items-center">
+        <div>
+            {{ $jabatans->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+        </div>
+        <p class="mt-2">Menampilkan {{ $jabatans->count() }} dari {{ $jabatans->total() }} data Jabatan.</p>
+    </div>
 </div>
 
 <style>

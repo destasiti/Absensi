@@ -55,7 +55,7 @@ class AbsensiController extends Controller
 
             $absensi->save(); // Simpan data absensi
 
-            return redirect()->back()->with('success', 'Anda telah berhasil melakukan absen masuk!');
+            return redirect()->back()->with('success');
         }
 
         return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
@@ -90,7 +90,7 @@ class AbsensiController extends Controller
             $absensi->WaktuKeluar = $waktuSekarang->toTimeString();
             $absensi->save();
 
-            return redirect()->back()->with('success', 'Anda telah berhasil melakukan absen keluar!');
+            return redirect()->back()->with('success');
         }
 
         return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
@@ -122,17 +122,10 @@ class AbsensiController extends Controller
 
         return view('absensi.laporan', compact('dataAbsensi'));
     }
-
-    // Fungsi untuk mengunduh laporan dalam bentuk PDF
-    public function downloadPDF()
-    {
-        if (auth()->user()->role_as !== 'admin') {
-            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mendownload laporan ini.');
-        }
-
-        $absensi = Absensi::with('user')->orderBy('Tanggal', 'desc')->get();
-        $pdf = Pdf::loadView('absensi.laporan_pdf', compact('absensi'));
-
-        return $pdf->download('laporan_absensi.pdf');
-    }
+  //  public function boot() {View::composer('partial.navbar', function ($view) {
+        // Ambil pengajuan cuti yang berstatus pending
+        //$pengajuanCutiBaru = Cuti::where('status', 'pending')->latest()->take(5)->get();
+        //$view->with('pengajuanCutiBaru', $pengajuanCutiBaru);
+    //});
+//}
 }

@@ -40,7 +40,7 @@
             <tbody>
                 @forelse($users as $user)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->jabatan->NamaJabatan ?? 'Tidak ada' }}</td>
@@ -51,10 +51,10 @@
                         <td>{{ $user->Tanggal_Bergabung->format('d-m-Y') }}</td>
                         <td>{{ $user->Status }}</td>
                         <td>{{ $user->role_as }}</td>
-                        <td><P>
+                        <td>
                             <a href="{{ route('users.edit', $user->UserID) }}" class="btn btn-sm btn-info" title="Edit">
                                 <i class="fas fa-edit"></i> Edit
-                            </a><p>
+                            </a>
                             <a href="{{ route('users.show', $user->UserID) }}" class="btn btn-sm" title="Lihat" style="background-color: #89CFF0; color: #fff;">
                                 <i class="fas fa-eye"></i> Lihat
                             </a>
@@ -74,7 +74,13 @@
                 @endforelse
             </tbody>
         </table>
-        {{ $users->links() }}
+
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+            <div>
+                {{ $users->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+            </div>
+            <p class="mt-2">Menampilkan {{ $users->count() }} dari {{ $users->total() }} data Karyawan.</p>
+        </div>
     </div>
 </div>
 

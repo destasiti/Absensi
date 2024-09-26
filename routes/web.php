@@ -79,7 +79,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/cuti/{id}', [CutiController::class, 'show'])->name('admin.cuti.show');
 
 });
-
+Route::get('/navbar', [NavbarController::class, 'index'])->name('navbar');
+Route::patch('/notifikasi/{id}', [NotifikasiController::class, 'markAsRead']);
 
 
 

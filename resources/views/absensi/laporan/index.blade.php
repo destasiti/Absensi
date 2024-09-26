@@ -90,7 +90,7 @@
     }
 
     .table th {
-        background-color: #007bff;
+        background-color: #5D87FF;
         color: white;
         font-weight: bold;
     }
@@ -150,4 +150,10 @@
         </table>
     </div>
 </div>
+<div class="mt-3 d-flex justify-content-between align-items-center">
+        <div>
+            {{ $absensi->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+        </div>
+        <p class="mt-2">Menampilkan {{ $absensi->count() }} dari {{ $absensi->total() }} data Absensi.</p>
+    </div>
 @endsection

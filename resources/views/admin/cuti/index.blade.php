@@ -92,16 +92,6 @@
         background-color: #c82333;
     }
 
-    .btn-info {
-        background-color: #17a2b8;
-        color: white;
-        border: none;
-    }
-
-    .btn-info:hover {
-        background-color: #138496;
-    }
-
     .badge {
         padding: 8px;
         border-radius: 5px;
@@ -126,7 +116,7 @@
 
 <div class="container">
     <h2>Daftar Pengajuan Cuti</h2>
-    <p>&nbsp;</P>
+    <p>&nbsp;</p>
     <!-- Form Pencarian -->
     <div class="form-search">
         <form action="{{ route('admin.cuti.index') }}" method="GET">
@@ -148,7 +138,7 @@
                 <th>Tanggal Selesai</th>
                 <th>Status</th>
                 <th>Alasan</th>
-                <th>Aksi</th>
+                <th>Aksi</th> <!-- Kolom Aksi -->
             </tr>
         </thead>
         <tbody>
@@ -170,18 +160,19 @@
                 <td>{{ $cuti->alasan }}</td>
                 <td>
                     @if($cuti->status == 'pending')
-                        <form action="{{ route('admin.cuti.updateStatus', ['id' => $cuti->CutiID, 'status' => 'approved']) }}" method="POST" style="display:inline;">
+                        <!-- Aksi Setujui dan Tolak -->
+                        <form action="{{ route('admin.cuti.updateStatus', ['id' => $cuti->CutiID, 'status' => 'approved']) }}" method="POST" style="display:inline;" class="form-approval">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-custom-success">Setujui</button>
                         </form>
-                        <form action="{{ route('admin.cuti.updateStatus', ['id' => $cuti->CutiID, 'status' => 'rejected']) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('admin.cuti.updateStatus', ['id' => $cuti->CutiID, 'status' => 'rejected']) }}" method="POST" style="display:inline;" class="form-rejection">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-danger">Tolak</button>
                         </form>
                     @else
-                        <a href="{{ route('admin.cuti.show', ['id' => $cuti->CutiID]) }}" class="btn btn-info">Detail</a>
+                        <span>Tidak ada aksi</span> <!-- Jika status sudah disetujui atau ditolak -->
                     @endif
                 </td>
             </tr>
@@ -189,4 +180,20 @@
         </tbody>
     </table>
 </div>
+
+<div class="mt-3 d-flex justify-content-between align-items-center">
+        <div>
+            {{ $cutis->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+        </div>
+        <p class="mt-2">Menampilkan {{ $cutis->count() }} dari {{ $cutis->total() }} data Pengajuan Cuti.</p>
+    </div>
+<script>
+    // Hilangkan tombol setelah diklik
+    document.querySelectorAll('.form-approval, .form-rejection').forEach(form => {
+        form.addEventListener('submit', function() {
+            this.querySelector('button').disabled = true;
+        });
+    });
+</script>
+
 @endsection
