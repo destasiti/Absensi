@@ -21,7 +21,7 @@ class CutiController extends Controller
             $query->whereDate('tanggal_mulai', '=', $request->tanggal_mulai);
         }
     
-        $cutis = $query->paginate(5);
+        $cutis = Cuti::orderBy('created_at', 'desc')->paginate(10);
     
         // Ambil notifikasi yang belum dibaca oleh user
         $notifications = auth()->user()->unreadNotifications;
@@ -46,30 +46,30 @@ class CutiController extends Controller
             'status' => 'pending',
         ]);
 
-        // Kirim notifikasi ke admin
-        $admin = User::where('role_as', 'admin')->first();
-        $admin->notify(new CutiSubmittedNotification($cuti));
-
         return redirect()->route('cuti.index')->with('success', 'Pengajuan cuti berhasil dikirim.');
     }
 
+    public function create()
+    {
+        return view('cuti.create');
+    }
     // Menampilkan daftar pengajuan cuti untuk admin
     public function index(Request $request)
-    {
-        $search = $request->input('search');
+{
+    $search = $request->query('search');
+    
+    $cutis = Cuti::with('user')
+                 ->when($search, function ($query, $search) {
+                     return $query->whereHas('user', function($q) use ($search) {
+                         $q->where('name', 'like', "%{$search}%");
+                     });
+                 })
+                 ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
+                 ->paginate(10);
 
-        $cutis = Cuti::with('user')
-            ->when($search, function ($query, $search) {
-                return $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-            })
-            ->paginate(5);
+    return view('admin.cuti.index', compact('cutis'));
+}
 
-        $pengajuanCutiBaru = Cuti::where('status', 'pending')->latest()->take(5)->get();
-
-        return view('admin.cuti.index', compact('cutis', 'pengajuanCutiBaru'));
-    }
 
     // Update status cuti dan kirim notifikasi ke user
     public function updateStatus($id, $status)
@@ -77,10 +77,6 @@ class CutiController extends Controller
         $cuti = Cuti::findOrFail($id);
         $cuti->status = $status;
         $cuti->save();
-
-        // Kirim notifikasi ke user
-        $user = $cuti->user;
-        $user->notify(new UserCutiStatusUpdatedNotification($cuti));
 
         return redirect()->route('admin.cuti.index')->with('success', 'Status cuti berhasil diubah.');
     }

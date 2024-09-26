@@ -68,10 +68,12 @@
 
         </table>
     </div>
-
-    <div class="mt-3 d-flex justify-content-between align-items-center">
-        <p class="mt-2">Menampilkan {{ $gajis->count() }} dari {{ $gajis->total() }} data Gaji.</p>
-        {{ $gajis->appends(request()->except('page'))->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
     </div>
+    <div class="mt-3 d-flex justify-content-between align-items-center">
+        <div>
+            {{ $gajis->links('pagination::bootstrap-4') }} <!-- Memastikan pagination menggunakan Bootstrap -->
+        </div>
+        <p class="mt-2">Menampilkan {{ $gajis->count() }} dari {{ $gajis->total() }} data Gaji.</p>
 </div>
+
 @endsection

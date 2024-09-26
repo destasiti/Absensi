@@ -7,30 +7,6 @@
                     <i class="ti ti-menu-2"></i>
                 </a>
             </li>
-            <!-- Tambahkan icon lonceng notifikasi di sini -->
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="ti ti-bell-ringing"></i> <!-- Icon lonceng -->
-                    @if(auth()->user()->unreadNotifications->count() > 0)
-                        <div class="notification bg-primary rounded-circle"></div> <!-- Bubble notifikasi -->
-                    @endif
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-                    @foreach(auth()->user()->unreadNotifications as $notification)
-                        <li>
-                            <a href="{{ url('/cuti/' . $notification->data['cuti_id']) }}" class="dropdown-item">
-                                {{ $notification->data['message'] }}
-                                <br><small>{{ $notification->created_at->diffForHumans() }}</small>
-                            </a>
-                        </li>
-                    @endforeach
-                    @if(auth()->user()->unreadNotifications->isEmpty())
-                        <li>
-                            <a class="dropdown-item text-center">Tidak ada notifikasi</a>
-                        </li>
-                    @endif
-                </ul>
-            </li>
         </ul>
 
         <!-- Profil User di sebelah kanan -->

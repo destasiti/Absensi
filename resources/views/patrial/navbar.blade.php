@@ -7,31 +7,6 @@
                     <i class="ti ti-menu-2"></i>
                 </a>
             </li>
-
-            <!-- Icon lonceng notifikasi -->
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="ti ti-bell-ringing"></i> <!-- Icon lonceng -->
-                    @if($pengajuanCutiBaru->count() > 0)
-                        <div class="notification bg-primary rounded-circle"></div> <!-- Bubble notifikasi -->
-                    @endif
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-                    @foreach($pengajuanCutiBaru as $cuti)
-                        <li>
-                            <a href="{{ route('admin.cuti.index') }}" class="dropdown-item">
-                                Pengajuan cuti dari {{ $cuti->user->name }}
-                                <br><small>{{ $cuti->created_at->diffForHumans() }}</small>
-                            </a>
-                        </li>
-                    @endforeach
-                    @if($pengajuanCutiBaru->isEmpty())
-                        <li>
-                            <a class="dropdown-item text-center">Tidak ada notifikasi</a>
-                        </li>
-                    @endif
-                </ul>
-            </li>
         </ul>
 
         <!-- Profil Admin di sebelah kanan -->

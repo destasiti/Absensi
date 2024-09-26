@@ -13,7 +13,8 @@ class JabatanController extends Controller
         $jabatans= Jabatans::with('departemens')->when($search , function($query) use ($search)
         {
             return $query->where('NamaJabatan', 'like', '%'. $search .'%');
-        })->paginate(5);
+        }) ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
+        ->paginate(10);
         return view('jabatans.index', compact('jabatans', 'search'));
     }
 

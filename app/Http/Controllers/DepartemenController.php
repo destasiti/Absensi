@@ -18,7 +18,7 @@ class DepartemenController extends Controller
         }
         
         // Paginate 5 item per halaman
-        $departemens = $query->paginate(5); 
+        $departemens =Departemens::orderBy('created_at', 'desc')->paginate(10); 
         return view('departemens.index', compact('departemens'));
     }
 
