@@ -15,4 +15,5 @@
     <p>
 <p> Anda memasukan data-data semuanya </p>
 <p> untuk absen, buat terlebih dahulu data user/karyawan </p>
+<P> password login user dan admin <code>12345678</code></P>
 
